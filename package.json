@@ -24,6 +24,6 @@
   },
   "homepage": "https://github.com/ZeusORyan/NEXUS#readme",
   "devDependencies": {
-    "react-scripts": "^0.0.0"
+    "react-scripts": "^5.0.1"
   }
 }
