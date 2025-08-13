@@ -1,4 +1,12 @@
+// jest.config.js
+module.exports = {
+  setupFilesAfterEnv: ['<rootDir>/src/setupTests.js'],
+};
+
+// src/setupTests.js
 import '@testing-library/jest-dom';
+
+// src/OnboardingGuide.test.tsx
 import { render, screen, fireEvent } from '@testing-library/react';
 import OnboardingGuide from './OnboardingGuide';
 
