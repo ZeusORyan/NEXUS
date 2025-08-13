@@ -1,0 +1,22 @@
+{
+  "motor_cortex": {
+    "neural_activity": "high",
+    "swarm_action": "deploy",
+    "target_zone": "muscle_tissue_repair"
+  },
+  "immune_system": {
+    "marker_level": "high",
+    "swarm_action": "move",
+    "target_zone": "affected_organ"
+  },
+  "visual_cortex": {
+    "neural_activity": "spike",
+    "swarm_action": "monitor",
+    "target_zone": "optic_nerve"
+  },
+  "prefrontal_cortex": {
+    "neural_activity": "low",
+    "swarm_action": "standby",
+    "target_zone": "frontal_lobe"
+  }
+}
