@@ -5,7 +5,6 @@ import SettingsPanel from './SettingsPanel';
 import NotFound from './NotFound';
 import { ErrorBoundary } from './ErrorBoundary';
 import Login from './Login';
-import NeuroSync from './NeuroSync';
 import NeuroChart from './NeuroChart';
 
 export default function App() {
@@ -202,5 +201,25 @@ interface NeuroSyncProps {
 }
 
 const NeuroSync: React.FC<NeuroSyncProps> = ({ onEvent, onData }) => {
-  // ...component code...
+  // Simulate streaming data and events
+  React.useEffect(() => {
+    if (onEvent) {
+      onEvent(`[${new Date().toLocaleTimeString()}] NeuroSync: Connected`);
+    }
+    if (onData) {
+      onData([
+        { zone: 'motor_cortex', value: Math.random() * 100 },
+        { zone: 'immune_system', value: Math.random() * 100 },
+        { zone: 'visual_cortex', value: Math.random() * 100 },
+        { zone: 'prefrontal_cortex', value: Math.random() * 100 },
+      ]);
+    }
+    // You can add more streaming logic here
+  }, [onEvent, onData]);
+
+  return (
+    <div style={{ marginBottom: 16 }}>
+      <span style={{ fontSize: 14, color: '#888' }}>NeuroSync active</span>
+    </div>
+  );
 };
