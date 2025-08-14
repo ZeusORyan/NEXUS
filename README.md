@@ -12,11 +12,19 @@ N.E.X.U.S. is an interactive platform for simulating nanobot swarms, neural over
 
 ## Features
 
-- 3D human body mesh with neural overlays
-- Swarm mission visualization and mapping
-- Live NanoCodeLab programming console (with authentication)
-- Advanced visual effects: volumetric lights, particle trails, data streaming
-- Modular, extensible architecture
+- **Onboarding Guide:** Friendly overlay to help new users get started.
+- **Settings Panel:** Change color scheme, font size, and enable high contrast mode. Preferences are saved automatically.
+- **User Authentication:** Simple login form to restrict dashboard access.
+- **Error Boundary:** Catches and displays UI errors gracefully.
+- **404 Page:** User-friendly not found page for missing routes.
+- **VoicePilot:** Type or speak commands to control the swarm and dashboard.
+- **SwarmMap3D:** Visualizes the selected neural zone in a 3D map.
+- **NeuroSync:** Streams simulated neural and biometric data; integrates with event log and chart.
+- **NeuroChart:** Live chart visualizing neural signal, heart rate, and oxygen data. Supports CSV export.
+- **Event Log:** Displays recent actions and data events.
+- **Imaging:** View and overlay medical or neural imaging data (e.g., MRI, CT, EEG) within the dashboard.
+- **Responsive Design:** Works on desktop and mobile screens.
+- **Unit Tests:** Core components are covered by automated tests.
 
 ## Quick Start
 
@@ -46,7 +54,22 @@ N.E.X.U.S. is an interactive platform for simulating nanobot swarms, neural over
 - Use the login form (default: admin/admin)
 
 ## Screenshots
-<!-- Add screenshots here -->
+
+| Component         | Screenshot Example |
+|-------------------|-------------------|
+| **Onboarding Guide** | ![Onboarding Guide](./screenshots/onboarding_guide.png) |
+| **Settings Panel**   | ![Settings Panel](./screenshots/settings_panel.png) |
+| **User Authentication** | ![Login Form](./screenshots/login_form.png) |
+| **Error Boundary**     | ![Error Boundary](./screenshots/error_boundary.png) |
+| **404 Page**           | ![404 Page](./screenshots/404_page.png) |
+| **VoicePilot**         | ![VoicePilot](./screenshots/voice_pilot.png) |
+| **SwarmMap3D**         | ![SwarmMap3D](./screenshots/swarm_map_3d.png) |
+| **NeuroSync**          | ![NeuroSync](./screenshots/neuro_sync.png) |
+| **NeuroChart**         | ![NeuroChart](./screenshots/neuro_chart.png) |
+| **Event Log**          | ![Event Log](./screenshots/event_log.png) |
+| **Imaging**            | ![Imaging Panel](./screenshots/imaging_panel.png) |
+
+> Place your screenshots in the `screenshots` folder and update the file names as needed.
 
 ## File Structure
 
@@ -56,6 +79,14 @@ N.E.X.U.S. is an interactive platform for simulating nanobot swarms, neural over
 NanoCodeLab.tsx      # Live programming console
 SwarmMap3D.tsx       # 3D visualization
 Dashboard.tsx        # Main dashboard UI
+NeuroSync.tsx        # Neural/biometric data streaming
+NeuroChart.tsx       # Data visualization chart
+SettingsPanel.tsx    # User settings
+OnboardingGuide.tsx  # Onboarding overlay
+VoicePilot.tsx       # Command input
+ErrorBoundary.tsx    # Error handling
+NotFound.tsx         # 404 page
+ImagingPanel.tsx     # Medical/neural imaging viewer and overlay
 ```
 
 ## Contributing
