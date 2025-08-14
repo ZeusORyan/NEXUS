@@ -1,10 +1,15 @@
 import React, { useState, useCallback } from 'react';
-// import SwarmMap3D from './SwarmMap3D'; // Removed to avoid conflict with local declaration
-// import VoicePilot from './VoicePilot'; // Removed to avoid conflict with local declaration
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import OnboardingGuide from './OnboardingGuide';
 import SettingsPanel from './SettingsPanel';
+import NotFound from './NotFound';
+import { ErrorBoundary } from './ErrorBoundary';
+import Login from './Login';
+import NeuroSync from './NeuroSync';
+import NeuroChart from './NeuroChart';
 
 export default function App() {
+  const [user, setUser] = useState<{ username: string } | null>(null);
   const [zone, setZone] = useState('motor_cortex');
   const [log, setLog] = useState<string[]>([]);
   const [settings, setSettings] = useState({
@@ -12,8 +17,8 @@ export default function App() {
     fontSize: 16,
     highContrast: false,
   });
+  const [neuroData, setNeuroData] = useState<any[]>([]);
 
-  // Handle voice or UI commands
   const handleCommand = useCallback((cmd: string) => {
     if (cmd.includes('deploy')) {
       setZone('motor_cortex');
@@ -32,68 +37,89 @@ export default function App() {
     }
   }, []);
 
+  // Show login screen if not authenticated
+  if (!user) {
+    return <Login onLogin={setUser} />;
+  }
+
   return (
-    <div
-      className="main-layout"
-      style={{
-        display: 'flex',
-        flexDirection: 'row',
-        gap: 32,
-        alignItems: 'flex-start',
-        flexWrap: 'wrap',
-        maxWidth: '100vw',
-        fontSize: settings.fontSize,
-        background: settings.highContrast ? '#000' : '#181f2a',
-        color: settings.highContrast ? '#fff' : '#cce6ff',
-        minHeight: '100vh',
-      }}
-    >
+    <Router>
       <OnboardingGuide />
       <SettingsPanel settings={settings} setSettings={setSettings} />
-      <div style={{ flex: 1, minWidth: 320 }}>
-        <SwarmMap3D selectedZone={zone} color={settings.color} />
-        <div style={{ marginTop: 16 }}>
-          <button onClick={() => { setZone('motor_cortex'); setLog(l => [`[${new Date().toLocaleTimeString()}] UI: Deploy`, ...l]); }}>
-            Deploy Swarm
-          </button>
-          <button onClick={() => { setZone('immune_system'); setLog(l => [`[${new Date().toLocaleTimeString()}] UI: Move`, ...l]); }} style={{ marginLeft: 8 }}>
-            Move Swarm
-          </button>
-          <button onClick={() => { setZone('visual_cortex'); setLog(l => [`[${new Date().toLocaleTimeString()}] UI: Monitor`, ...l]); }} style={{ marginLeft: 8 }}>
-            Monitor
-          </button>
-          <button onClick={() => { setZone('prefrontal_cortex'); setLog(l => [`[${new Date().toLocaleTimeString()}] UI: Standby`, ...l]); }} style={{ marginLeft: 8 }}>
-            Standby
-          </button>
-        </div>
-      </div>
-      <div style={{ minWidth: 350, maxWidth: 400, flex: 1 }}>
-        <VoicePilot onCommand={handleCommand} />
-        <h3 style={{ marginTop: 32 }}>Event Log</h3>
-        <ul style={{
-          maxHeight: 300,
-          overflowY: 'auto',
-          background: settings.highContrast ? '#111' : '#222b38',
-          color: settings.highContrast ? '#fff' : '#cce6ff',
-          borderRadius: 8,
-          padding: 12,
-          width: '100%',
-        }}>
-          {log.map((entry, i) => <li key={i} style={{ fontSize: 14 }}>{entry}</li>)}
-        </ul>
-      </div>
-      <style>
-        {`
-          @media (max-width: 800px) {
-            .main-layout {
-              flex-direction: column !important;
-              gap: 16px !important;
-              align-items: stretch !important;
-            }
-          }
-        `}
-      </style>
-    </div>
+      <Routes>
+        <Route path="/" element={
+          <ErrorBoundary>
+            <div
+              className="main-layout"
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                gap: 32,
+                alignItems: 'flex-start',
+                flexWrap: 'wrap',
+                maxWidth: '100vw',
+                fontSize: settings.fontSize,
+                background: settings.highContrast ? '#000' : '#181f2a',
+                color: settings.highContrast ? '#fff' : '#cce6ff',
+                minHeight: '100vh',
+              }}
+            >
+              <div style={{ flex: 1, minWidth: 320 }}>
+                {/* NeuroSync streams data and updates event log and chart */}
+                <NeuroSync
+                  onEvent={msg => setLog(l => [msg, ...l])}
+                  onData={d => setNeuroData(d)}
+                />
+                <SwarmMap3D selectedZone={zone} color={settings.color} />
+                <div style={{ marginTop: 16 }}>
+                  <button onClick={() => { setZone('motor_cortex'); setLog(l => [`[${new Date().toLocaleTimeString()}] UI: Deploy`, ...l]); }}>
+                    Deploy Swarm
+                  </button>
+                  <button onClick={() => { setZone('immune_system'); setLog(l => [`[${new Date().toLocaleTimeString()}] UI: Move`, ...l]); }} style={{ marginLeft: 8 }}>
+                    Move Swarm
+                  </button>
+                  <button onClick={() => { setZone('visual_cortex'); setLog(l => [`[${new Date().toLocaleTimeString()}] UI: Monitor`, ...l]); }} style={{ marginLeft: 8 }}>
+                    Monitor
+                  </button>
+                  <button onClick={() => { setZone('prefrontal_cortex'); setLog(l => [`[${new Date().toLocaleTimeString()}] UI: Standby`, ...l]); }} style={{ marginLeft: 8 }}>
+                    Standby
+                  </button>
+                </div>
+              </div>
+              <div style={{ minWidth: 350, maxWidth: 400, flex: 1 }}>
+                <VoicePilot onCommand={handleCommand} />
+                <h3 style={{ marginTop: 32 }}>Event Log</h3>
+                <ul style={{
+                  maxHeight: 300,
+                  overflowY: 'auto',
+                  background: settings.highContrast ? '#111' : '#222b38',
+                  color: settings.highContrast ? '#fff' : '#cce6ff',
+                  borderRadius: 8,
+                  padding: 12,
+                  width: '100%',
+                }}>
+                  {log.map((entry, i) => <li key={i} style={{ fontSize: 14 }}>{entry}</li>)}
+                </ul>
+                {/* NeuroChart visualizes the streamed data */}
+                <NeuroChart data={neuroData} />
+              </div>
+              <style>
+                {`
+                  @media (max-width: 800px) {
+                    .main-layout {
+                      flex-direction: column !important;
+                      gap: 16px !important;
+                      align-items: stretch !important;
+                    }
+                  }
+                `}
+              </style>
+            </div>
+          </ErrorBoundary>
+        } />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </Router>
   );
 }
 
@@ -145,17 +171,24 @@ interface SwarmMap3DProps {
 }
 
 export function SwarmMap3D({ selectedZone, color }: SwarmMap3DProps) {
+  const [loading, setLoading] = React.useState(false);
+
+  React.useEffect(() => {
+    setLoading(true);
+    const timer = setTimeout(() => setLoading(false), 2000);
+    return () => clearTimeout(timer);
+  }, [selectedZone]);
+
+  if (loading) return <div>Loading...</div>;
   return (
-    <div
-      style={{
-        background: color,
-        borderRadius: 12,
-        padding: 24,
-        marginBottom: 16,
-        minHeight: 200,
-        boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
-      }}
-    >
+    <div style={{
+      background: color,
+      borderRadius: 12,
+      padding: 24,
+      marginBottom: 16,
+      minHeight: 200,
+      boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
+    }}>
       <h2>Swarm Map 3D</h2>
       <p>Selected Zone: <strong>{selectedZone}</strong></p>
       {/* Add 3D visualization or placeholder here */}
