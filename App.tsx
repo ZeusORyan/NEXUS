@@ -195,3 +195,12 @@ export function SwarmMap3D({ selectedZone, color }: SwarmMap3DProps) {
     </div>
   );
 }
+
+interface NeuroSyncProps {
+  onEvent?: (event: string) => void;
+  onData?: (d: any) => void;
+}
+
+const NeuroSync: React.FC<NeuroSyncProps> = ({ onEvent, onData }) => {
+  // ...component code...
+};
