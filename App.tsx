@@ -6,6 +6,8 @@ import NotFound from './NotFound';
 import { ErrorBoundary } from './ErrorBoundary';
 import Login from './Login';
 import NeuroChart from './NeuroChart';
+import ImagingPanel from './ImagingPanel';
+import NanoCodeLab from './NanoCodeLab';
 
 export default function App() {
   const [user, setUser] = useState<{ username: string } | null>(null);
@@ -64,7 +66,8 @@ export default function App() {
               }}
             >
               <div style={{ flex: 1, minWidth: 320 }}>
-                {/* NeuroSync streams data and updates event log and chart */}
+                <ImagingPanel />
+                <NanoCodeLab />
                 <NeuroSync
                   onEvent={msg => setLog(l => [msg, ...l])}
                   onData={d => setNeuroData(d)}
@@ -99,7 +102,6 @@ export default function App() {
                 }}>
                   {log.map((entry, i) => <li key={i} style={{ fontSize: 14 }}>{entry}</li>)}
                 </ul>
-                {/* NeuroChart visualizes the streamed data */}
                 <NeuroChart data={neuroData} />
               </div>
               <style>

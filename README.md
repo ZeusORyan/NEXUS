@@ -22,7 +22,8 @@ N.E.X.U.S. is an interactive platform for simulating nanobot swarms, neural over
 - **NeuroSync:** Streams simulated neural and biometric data; integrates with event log and chart.
 - **NeuroChart:** Live chart visualizing neural signal, heart rate, and oxygen data. Supports CSV export.
 - **Event Log:** Displays recent actions and data events.
-- **Imaging:** View and overlay medical or neural imaging data (e.g., MRI, CT, EEG) within the dashboard.
+- **Imaging Panel:** Upload and view medical or neural imaging data (e.g., MRI, CT, EEG).
+- **NanoCodeLab:** Live code editor for nanobot control scripts with simulated execution output.
 - **Responsive Design:** Works on desktop and mobile screens.
 - **Unit Tests:** Core components are covered by automated tests.
 

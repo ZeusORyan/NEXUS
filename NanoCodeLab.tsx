@@ -19,7 +19,7 @@ export default function NanoCodeLab() {
 	const [user, setUser] = useState<User | null>(null);
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
-	const [code, setCode] = useState('');
+	const [code, setCode] = useState('// Write nanobot control code here\n');
 	const [output, setOutput] = useState('');
 
 	// Simple login handler
@@ -38,6 +38,11 @@ export default function NanoCodeLab() {
 		// TODO: Replace with real sandboxed execution (e.g., Web Worker, serverless function)
 		if (code.includes('dangerous')) return 'Blocked: Unsafe command.';
 		return 'Executed: ' + code;
+	};
+
+	const runCode = () => {
+		// Simulate code execution (for demo purposes)
+		setOutput('Nanobot code executed successfully.');
 	};
 
 	const handleRun = () => {
@@ -62,10 +67,18 @@ export default function NanoCodeLab() {
 	return (
 		<div style={{ padding: 20 }}>
 			<h2>Welcome, {user.username} ({user.role})</h2>
-			<textarea rows={6} cols={60} value={code} onChange={e => setCode(e.target.value)} placeholder="Enter nanobot code..." />
+			<textarea
+				value={code}
+				onChange={e => setCode(e.target.value)}
+				rows={8}
+				style={{ width: '100%', borderRadius: 8, padding: 8, fontFamily: 'monospace', fontSize: 14, marginBottom: 12 }}
+				aria-label="Nanobot code editor"
+			/>
 			<br />
-			<button onClick={handleRun} disabled={!canExecute}>Run Code</button>
-			<div style={{ marginTop: 10 }}><b>Output:</b> <pre>{output}</pre></div>
+			<button onClick={runCode} style={{ marginBottom: 12 }} disabled={!canExecute}>Run Code</button>
+			<div style={{ background: '#222b38', borderRadius: 8, padding: 8, minHeight: 40 }}>
+				<strong>Output:</strong> {output}
+			</div>
 			<div style={{ marginTop: 20, color: 'gray' }}>
 				{/* TODO: Integrate real JWT/OAuth, role management, and secure sandboxing */}
 			</div>
