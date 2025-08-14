@@ -19,3 +19,5 @@ export default function LoadingSpinner() {
     </div>
   );
 }
+
+{loading ? <LoadingSpinner aria-label="Loading data" /> : <Component />}

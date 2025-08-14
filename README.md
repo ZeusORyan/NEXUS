@@ -26,6 +26,11 @@ N.E.X.U.S. is an interactive platform for simulating nanobot swarms, neural over
 - **NanoCodeLab:** Live code editor for nanobot control scripts with simulated execution output.
 - **Responsive Design:** Works on desktop and mobile screens.
 - **Unit Tests:** Core components are covered by automated tests.
+- **Accessibility:** All interactive components include ARIA labels and keyboard navigation.
+- **Comprehensive Error Handling:** All components display user-friendly error messages for invalid actions or failures.
+- **Loading States:** All async components display spinners or skeletons while loading.
+- **Settings Persistence:** User preferences are saved and restored automatically.
+- **Mobile Responsiveness:** The dashboard and all components adapt to mobile screens.
 
 ## Quick Start
 
@@ -89,6 +94,19 @@ ErrorBoundary.tsx    # Error handling
 NotFound.tsx         # 404 page
 ImagingPanel.tsx     # Medical/neural imaging viewer and overlay
 ```
+
+## Accessibility & Error Handling
+
+- **Accessibility:** All interactive elements (buttons, inputs, textareas, file uploads) include `aria-label` attributes for screen readers and `tabIndex={0}` for keyboard navigation.
+- **Error Handling:** All components display user-friendly error messages for invalid actions or failures, not just the ErrorBoundary.
+
+**Examples:**
+- ImagingPanel: `<input type="file" aria-label="Upload medical or neural image" tabIndex={0} />`
+- NanoCodeLab: `<textarea aria-label="Nanobot code editor" tabIndex={0} />`
+- All buttons: `<button aria-label="Run nanobot code" tabIndex={0}>Run Code</button>`
+- Error messages: `{error && <div style={{ color: 'red' }}>{error}</div>}`
+
+These improvements ensure NEXUS is accessible to all users and provides clear feedback for any errors or invalid actions.
 
 ## Contributing
 

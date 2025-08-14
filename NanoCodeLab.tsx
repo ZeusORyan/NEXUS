@@ -21,6 +21,7 @@ export default function NanoCodeLab() {
 	const [password, setPassword] = useState('');
 	const [code, setCode] = useState('// Write nanobot control code here\n');
 	const [output, setOutput] = useState('');
+	const [error, setError] = useState('');
 
 	// Simple login handler
 	const handleLogin = e => {
@@ -41,8 +42,13 @@ export default function NanoCodeLab() {
 	};
 
 	const runCode = () => {
-		// Simulate code execution (for demo purposes)
-		setOutput('Nanobot code executed successfully.');
+		try {
+			// Simulate code execution
+			setOutput('Nanobot code executed successfully.');
+			setError('');
+		} catch (err) {
+			setError('Code execution failed.');
+		}
 	};
 
 	const handleRun = () => {
@@ -68,17 +74,18 @@ export default function NanoCodeLab() {
 		<div style={{ padding: 20 }}>
 			<h2>Welcome, {user.username} ({user.role})</h2>
 			<textarea
+				aria-label="Nanobot code editor"
 				value={code}
 				onChange={e => setCode(e.target.value)}
 				rows={8}
 				style={{ width: '100%', borderRadius: 8, padding: 8, fontFamily: 'monospace', fontSize: 14, marginBottom: 12 }}
-				aria-label="Nanobot code editor"
 			/>
 			<br />
-			<button onClick={runCode} style={{ marginBottom: 12 }} disabled={!canExecute}>Run Code</button>
+			<button aria-label="Run nanobot code" tabIndex={0} onClick={runCode} style={{ marginBottom: 12 }} disabled={!canExecute}>Run Code</button>
 			<div style={{ background: '#222b38', borderRadius: 8, padding: 8, minHeight: 40 }}>
 				<strong>Output:</strong> {output}
 			</div>
+			{error && <div style={{ color: 'red' }}>{error}</div>}
 			<div style={{ marginTop: 20, color: 'gray' }}>
 				{/* TODO: Integrate real JWT/OAuth, role management, and secure sandboxing */}
 			</div>

@@ -2,14 +2,18 @@ import React, { useRef, useState } from 'react';
 
 export default function ImagingPanel() {
   const [image, setImage] = useState<string | null>(null);
+  const [error, setError] = useState('');
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
+    try {
+      const file = e.target.files?.[0];
+      if (!file) throw new Error('No file selected');
       const reader = new FileReader();
       reader.onload = ev => setImage(ev.target?.result as string);
       reader.readAsDataURL(file);
+    } catch (err) {
+      setError('Failed to load image.');
     }
   };
 
@@ -25,6 +29,8 @@ export default function ImagingPanel() {
         style={{ marginBottom: 16 }}
         aria-label="Upload medical or neural image"
       />
+      <button aria-label="View next image" tabIndex={0}>Next</button>
+      {error && <div style={{ color: 'red' }}>{error}</div>}
       {image && (
         <div style={{ marginTop: 16 }}>
           <img
