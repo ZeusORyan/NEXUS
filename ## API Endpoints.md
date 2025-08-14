@@ -1,4 +1,4 @@
-## API Endpoints
+# API Endpoints
 
 | Endpoint                | Method | Description                       | Example Response |
 |-------------------------|--------|-----------------------------------|------------------|

@@ -1,11 +1,14 @@
 // Dashboard.tsx - Component for N.E.X.U.S.
 
-import React from 'react';
+import React, { useState } from 'react';
 
 // TODO: Replace with actual logo file path
 const LOGO_URL = './A_logo_design_for_N.E.X.U.S._(Nanobot-Enabled_eXpe.png';
 
 export default function Dashboard({ children }) {
+	const [chartColor, setChartColor] = useState('#000000');
+	const [showHeartRate, setShowHeartRate] = useState(false);
+
 	return (
 		<div style={{ position: 'relative', minHeight: '100vh' }}>
 			{/* Logo watermark in corner */}

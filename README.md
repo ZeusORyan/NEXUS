@@ -102,6 +102,7 @@ ImagingPanel.tsx     # Medical/neural imaging viewer and overlay
 - **Error Handling:** All components display user-friendly error messages for invalid actions or failures, not just the ErrorBoundary.
 
 **Examples:**
+
 - ImagingPanel: `<input type="file" aria-label="Upload medical or neural image" tabIndex={0} />`
 - NanoCodeLab: `<textarea aria-label="Nanobot code editor" tabIndex={0} />`
 - All buttons: `<button aria-label="Run nanobot code" tabIndex={0}>Run Code</button>`

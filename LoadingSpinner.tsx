@@ -20,4 +20,8 @@ export default function LoadingSpinner() {
   );
 }
 
+// Example usage: define loading and Component for demonstration
+const loading = true; // or false, depending on your logic
+const Component = () => <div>Data loaded!</div>;
+
 {loading ? <LoadingSpinner aria-label="Loading data" /> : <Component />}
