@@ -31,6 +31,7 @@ N.E.X.U.S. is an interactive platform for simulating nanobot swarms, neural over
 - **Loading States:** All async components display spinners or skeletons while loading.
 - **Settings Persistence:** User preferences are saved and restored automatically.
 - **Mobile Responsiveness:** The dashboard and all components adapt to mobile screens.
+- **Dashboard Customization:** Users can personalize dashboard layout and chart appearance, including colors and visible metrics.
 
 ## Quick Start
 
@@ -107,6 +108,11 @@ ImagingPanel.tsx     # Medical/neural imaging viewer and overlay
 - Error messages: `{error && <div style={{ color: 'red' }}>{error}</div>}`
 
 These improvements ensure NEXUS is accessible to all users and provides clear feedback for any errors or invalid actions.
+
+## Dashboard Customization
+
+- **Drag-and-Drop Layout:** Users can rearrange dashboard panels using drag-and-drop (powered by `react-grid-layout`).
+- **Chart Appearance Controls:** Users can customize chart colors and toggle which metrics are displayed (e.g., heart rate, oxygen).
 
 ## Contributing
 

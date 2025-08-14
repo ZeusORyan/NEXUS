@@ -3,38 +3,26 @@ import {
   LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, Legend, ResponsiveContainer, Label
 } from 'recharts';
 
-const CustomTooltip = ({ active, payload, label }: any) => {
-  if (active && payload && payload.length) {
-    return (
-      <div style={{ background: '#222b38', color: '#cce6ff', padding: 8, borderRadius: 8 }}>
-        <strong>{new Date(label).toLocaleTimeString()}</strong>
-        <br />
-        Signal: {payload[0].value}
-        <br />
-        Heart Rate: {payload[1].value} bpm
-        <br />
-        Oxygen: {payload[2].value}%
-      </div>
+export default function NeuroChart({ data, chartColor, showHeartRate, showOxygen }: {
+  data: any[],
+  chartColor: string,
+  showHeartRate?: boolean,
+  showOxygen?: boolean
+}) {
+  // Helper to convert data to CSV
+  function toCSV(data: any[]) {
+    const header = ['timestamp', 'signal', 'heartRate', 'oxygen'];
+    const rows = data.map(d =>
+      [
+        new Date(d.timestamp).toLocaleString(),
+        d.signal,
+        d.biometric?.heartRate ?? '',
+        d.biometric?.oxygen ?? ''
+      ].join(',')
     );
+    return [header.join(','), ...rows].join('\n');
   }
-  return null;
-};
 
-// Helper to convert data to CSV
-function toCSV(data: any[]) {
-  const header = ['timestamp', 'signal', 'heartRate', 'oxygen'];
-  const rows = data.map(d =>
-    [
-      new Date(d.timestamp).toLocaleString(),
-      d.signal,
-      d.biometric?.heartRate ?? '',
-      d.biometric?.oxygen ?? ''
-    ].join(',')
-  );
-  return [header.join(','), ...rows].join('\n');
-}
-
-export default function NeuroChart({ data }: { data: any[] }) {
   const handleDownload = () => {
     const csv = toCSV(data);
     const blob = new Blob([csv], { type: 'text/csv' });
@@ -79,11 +67,15 @@ export default function NeuroChart({ data }: { data: any[] }) {
             <YAxis>
               <Label value="Value" angle={-90} position="insideLeft" />
             </YAxis>
-            <Tooltip content={<CustomTooltip />} />
+            <Tooltip />
             <Legend />
-            <Line type="monotone" dataKey="signal" stroke="#2196f3" name="Neural Signal" dot={false} />
-            <Line type="monotone" dataKey="biometric.heartRate" stroke="#e63946" name="Heart Rate" dot={false} />
-            <Line type="monotone" dataKey="biometric.oxygen" stroke="#8ecae6" name="Oxygen" dot={false} />
+            <Line type="monotone" dataKey="signal" stroke={chartColor} name="Neural Signal" dot={false} />
+            {showHeartRate && (
+              <Line type="monotone" dataKey="biometric.heartRate" stroke="#e63946" name="Heart Rate" dot={false} />
+            )}
+            {showOxygen && (
+              <Line type="monotone" dataKey="biometric.oxygen" stroke="#8ecae6" name="Oxygen" dot={false} />
+            )}
           </LineChart>
         </ResponsiveContainer>
       </div>

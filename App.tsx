@@ -8,6 +8,7 @@ import Login from './Login';
 import NeuroChart from './NeuroChart';
 import ImagingPanel from './ImagingPanel';
 import NanoCodeLab from './NanoCodeLab';
+import GridLayout from 'react-grid-layout';
 
 export default function App() {
   const [user, setUser] = useState<{ username: string } | null>(null);
@@ -19,6 +20,11 @@ export default function App() {
     highContrast: false,
   });
   const [neuroData, setNeuroData] = useState<any[]>([]);
+
+  // Example chart appearance controls
+  const [chartColor, setChartColor] = React.useState('#2196f3');
+  const [showHeartRate, setShowHeartRate] = React.useState(true);
+  const [showOxygen, setShowOxygen] = React.useState(true);
 
   const handleCommand = useCallback((cmd: string) => {
     if (cmd.includes('deploy')) {
@@ -43,6 +49,16 @@ export default function App() {
     return <Login onLogin={setUser} />;
   }
 
+  // Layout for react-grid-layout
+  const layout = [
+    { i: 'imaging', x: 0, y: 0, w: 1, h: 2 },
+    { i: 'nano', x: 1, y: 0, w: 1, h: 2 },
+    { i: 'neuro', x: 0, y: 2, w: 2, h: 2 },
+    { i: 'swarm', x: 2, y: 0, w: 1, h: 2 },
+    { i: 'chart', x: 2, y: 2, w: 1, h: 2 },
+    { i: 'voice', x: 0, y: 4, w: 3, h: 1 },
+  ];
+
   return (
     <Router>
       <OnboardingGuide />
@@ -65,45 +81,35 @@ export default function App() {
                 minHeight: '100vh',
               }}
             >
-              <div style={{ flex: 1, minWidth: 320 }}>
-                <ImagingPanel />
-                <NanoCodeLab />
-                <NeuroSync
-                  onEvent={msg => setLog(l => [msg, ...l])}
-                  onData={d => setNeuroData(d)}
-                />
-                <SwarmMap3D selectedZone={zone} color={settings.color} />
-                <div style={{ marginTop: 16 }}>
-                  <button onClick={() => { setZone('motor_cortex'); setLog(l => [`[${new Date().toLocaleTimeString()}] UI: Deploy`, ...l]); }}>
-                    Deploy Swarm
-                  </button>
-                  <button onClick={() => { setZone('immune_system'); setLog(l => [`[${new Date().toLocaleTimeString()}] UI: Move`, ...l]); }} style={{ marginLeft: 8 }}>
-                    Move Swarm
-                  </button>
-                  <button onClick={() => { setZone('visual_cortex'); setLog(l => [`[${new Date().toLocaleTimeString()}] UI: Monitor`, ...l]); }} style={{ marginLeft: 8 }}>
-                    Monitor
-                  </button>
-                  <button onClick={() => { setZone('prefrontal_cortex'); setLog(l => [`[${new Date().toLocaleTimeString()}] UI: Standby`, ...l]); }} style={{ marginLeft: 8 }}>
-                    Standby
-                  </button>
+              <GridLayout className="layout" layout={layout} cols={3} rowHeight={140} width={1200}>
+                <div key="imaging"><ImagingPanel /></div>
+                <div key="nano"><NanoCodeLab /></div>
+                <div key="neuro"><NeuroSync onEvent={msg => setLog(l => [msg, ...l])} onData={d => setNeuroData(d)} /></div>
+                <div key="swarm"><SwarmMap3D selectedZone={zone} color={settings.color} /></div>
+                <div key="chart">
+                  <div style={{ marginBottom: 8 }}>
+                    <label>
+                      Chart Color:
+                      <input type="color" value={chartColor} onChange={e => setChartColor(e.target.value)} style={{ marginLeft: 8 }} />
+                    </label>
+                    <label style={{ marginLeft: 16 }}>
+                      <input type="checkbox" checked={showHeartRate} onChange={e => setShowHeartRate(e.target.checked)} />
+                      Show Heart Rate
+                    </label>
+                    <label style={{ marginLeft: 16 }}>
+                      <input type="checkbox" checked={showOxygen} onChange={e => setShowOxygen(e.target.checked)} />
+                      Show Oxygen
+                    </label>
+                  </div>
+                  <NeuroChart
+                    data={neuroData}
+                    chartColor={chartColor}
+                    showHeartRate={showHeartRate}
+                    showOxygen={showOxygen}
+                  />
                 </div>
-              </div>
-              <div style={{ minWidth: 350, maxWidth: 400, flex: 1 }}>
-                <VoicePilot onCommand={handleCommand} />
-                <h3 style={{ marginTop: 32 }}>Event Log</h3>
-                <ul style={{
-                  maxHeight: 300,
-                  overflowY: 'auto',
-                  background: settings.highContrast ? '#111' : '#222b38',
-                  color: settings.highContrast ? '#fff' : '#cce6ff',
-                  borderRadius: 8,
-                  padding: 12,
-                  width: '100%',
-                }}>
-                  {log.map((entry, i) => <li key={i} style={{ fontSize: 14 }}>{entry}</li>)}
-                </ul>
-                <NeuroChart data={neuroData} />
-              </div>
+                <div key="voice"><VoicePilot onCommand={handleCommand} /></div>
+              </GridLayout>
               <style>
                 {`
                   @media (max-width: 800px) {
